@@ -116,50 +116,50 @@ for e in range(epochs):
         
         #결과 값 생성 (실제 값인 0.99 외엔 모두 0.01)
         targets=numpy.zeros(output_nodes)+0.01
-        
-        
         targets[int(all_values[0])]=0.99
 
+        #내가 추가한 코드
         print(i,"번째 훈련")
         n.train(inputs,targets)
         i+=1
- 
-print("\n====================훈련끝=======================\n")
+ print("\n====================훈련끝=======================\n")
+
+#mnist 테스트 데이터 가져오기
 test_data_file=open("mnist_test.csv","r")
-
 test_data_list=test_data_file.readlines()
-
 test_data_file.close()
 
- 
-
+#점수판
 scorecard=[]
-
 
 
 for record in test_data_list:
 
     all_values=record.split(',')
-
+    #정답은 첫번째 값
     correct_label=int(all_values[0])
-
+    #입력값 범위, 값 조정 (위와 같은 방법)
     inputs=(numpy.asfarray(all_values[1:])/255.0*0.99)+0.01
-
+    #질의
     outputs=n.query(inputs)
-
+    #제일 높은 출력값이 결과
     label=numpy.argmax(outputs)
+    
+    
     image_array=numpy.asfarray(all_values[1:]).reshape((28,28))
     matplotlib.pyplot.imshow(image_array,cmap='Greys',interpolation='None')
+    
+    
     print("컴퓨터가 낸 정답 : ",label)
     #print(correct_label,"is correct answer")
 
     if(label==correct_label):
-
+        #성적표에 1 더함
         scorecard.append(1)
         print("정답!")
 
     else:
-
+        #성적표에 암것도 안 더함
         scorecard.append(0)
         print("오답!")
         
